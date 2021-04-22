@@ -11,11 +11,12 @@ var highScoresSectionEl = document.querySelector('#high-scores-section');
 var gameSectionEl = document.querySelector('#game-section');
 var beginSectionEl = document.querySelector('#begin-game-section');
 var timeLeftEl = document.querySelector('#time-left');
+var scoresTableBodyEl = document.querySelector('#scores-table-body');
+
 var timeLeft = 60;
 var secondsTimer;
-var scores = [{
 
-}]
+var scores = JSON.parse(localStorage.getItem('scores')) || [];
 var questions = [
 	{
 		text: "What of the following is not a data type?",
@@ -51,9 +52,7 @@ function handleBeginGame() {
 function startGame() {
 	showGameSection();
 	secondTimer = setInterval(function () {
-		console.log(timeLeft)
 		timeLeft--;
-		console.log(timeLeftEl)
 		timeLeftEl.textContent = timeLeft;
 		if (timeLeft <= 0) {
 			timeLeft = 0;
@@ -115,6 +114,7 @@ function endGame() {
 	clearInterval(secondTimer);
 	scoreEl.textContent = timeLeft;
 	hideGameSection();
+	showScores();
 	showHighScoreSection();
 }
 
@@ -122,22 +122,43 @@ function resetGame() {
 	hideHighScoreSection();
 	hideGameSection();
 	showBeginGameSection();
+	scores = JSON.parse(localStorage.getItem('scores')) || [];
 	scoreEl.textContent = "TBD";
 	questionsIndex = 0;
 	timeLeft = 60
 	timeLeftEl.textContent = timeLeft;
 }
-// TODO
+
+
 function handleScore() {
 	var score = timeLeft;
 	var initials = initialsInputEl.value;
 	initialsInputEl.value = "";
+	
 	scores.push({
 		score: score,
 		initials: initials
-	})
-	console.log(scores);
+	});
+	localStorage.setItem('scores', JSON.stringify(scores));
 	resetGame();
+}
+
+function showScores(){
+	scores.sort((a,b) => b.score - a.score);
+	scoresTableBodyEl.innerHTML = "";
+	for(var i = 0; i < scores.length; i++){
+		const score = scores[i];
+		const tr = document.createElement('tr');
+		const initials = score.initials;
+		const initialsCell = document.createElement('td');
+		initialsCell.textContent = initials;
+		tr.appendChild(initialsCell);
+		const thisScore = score.score;
+		const thisScoreCell = document.createElement('td');
+		thisScoreCell.textContent = thisScore;
+		tr.appendChild(thisScoreCell);
+		scoresTableBodyEl.appendChild(tr);
+	}
 }
 
 function hideGameSection() {
