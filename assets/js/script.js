@@ -2,13 +2,20 @@ var aButton = document.querySelector('#A');
 var bButton = document.querySelector('#B');
 var cButton = document.querySelector('#C');
 var dButton = document.querySelector('#D');
+var beginButton = document.querySelector('#begin-button');
 var hsButton = document.querySelector('#hs-button');
+var initialsInputEl = document.querySelector('#initials-input');
 var questionTextEl = document.querySelector('#question-text');
 var scoreEl = document.querySelector('#score');
-var highScoresEl = document.querySelector('#high-scores');
+var highScoresSectionEl = document.querySelector('#high-scores-section');
+var gameSectionEl = document.querySelector('#game-section');
+var beginSectionEl = document.querySelector('#begin-game-section');
 var timeLeftEl = document.querySelector('#time-left');
 var timeLeft = 60;
 var secondsTimer;
+var scores = [{
+
+}]
 var questions = [
 	{
 		text: "What of the following is not a data type?",
@@ -33,18 +40,22 @@ var questions = [
 ];
 var questionsIndex = 0;
 
+function handleBeginGame() {
+	hideBeginGameSection();
+	startGame();
+}
+
 /**
  * Begins the game, starts timer off.
  */
 function startGame() {
-	timeLeftEl.textContent = timeLeft;
-
-	secondTimer = setInterval(function() {
+	showGameSection();
+	secondTimer = setInterval(function () {
 		console.log(timeLeft)
 		timeLeft--;
 		console.log(timeLeftEl)
 		timeLeftEl.textContent = timeLeft;
-		if(timeLeft <= 0){
+		if (timeLeft <= 0) {
 			timeLeft = 0;
 			clearInterval(secondTimer);
 			endGame();
@@ -89,7 +100,7 @@ function handleQuestionAnswer(userAnswer) {
  */
 function nextQuestion() {
 	questionsIndex++;
-	if (questions.length > questionsIndex ) {
+	if (questions.length > questionsIndex) {
 		presentCurrentQuestion();
 	}
 	else {
@@ -101,31 +112,68 @@ function nextQuestion() {
  * Handles cleanup
  */
 function endGame() {
-	console.log(timeLeft);
 	clearInterval(secondTimer);
 	scoreEl.textContent = timeLeft;
-	highScoresEl.style = "";
+	hideGameSection();
+	showHighScoreSection();
 }
 
+function resetGame() {
+	hideHighScoreSection();
+	hideGameSection();
+	showBeginGameSection();
+	scoreEl.textContent = "TBD";
+	questionsIndex = 0;
+	timeLeft = 60
+	timeLeftEl.textContent = timeLeft;
+}
 // TODO
-function handleScore(){
-
+function handleScore() {
+	var score = timeLeft;
+	var initials = initialsInputEl.value;
+	initialsInputEl.value = "";
+	scores.push({
+		score: score,
+		initials: initials
+	})
+	console.log(scores);
+	resetGame();
 }
 
-hsButton.addEventListener('click', function(){
+function hideGameSection() {
+	gameSectionEl.style = "display:none;";
+}
+function showGameSection() {
+	gameSectionEl.style = "";
+}
+function hideBeginGameSection() {
+	beginSectionEl.style = "display:none;";
+}
+function showBeginGameSection() {
+	beginSectionEl.style = "";
+}
+function hideHighScoreSection() {
+	highScoresSectionEl.style = "display:none;";
+}
+function showHighScoreSection() {
+	highScoresSectionEl.style = "";
+}
+
+hsButton.addEventListener('click', function () {
 	handleScore();
 })
-aButton.addEventListener('click', function(){
+aButton.addEventListener('click', function () {
 	handleQuestionAnswer(0);
 })
-bButton.addEventListener('click', function(){
+bButton.addEventListener('click', function () {
 	handleQuestionAnswer(1);
 })
-cButton.addEventListener('click', function(){
+cButton.addEventListener('click', function () {
 	handleQuestionAnswer(2);
 })
-dButton.addEventListener('click', function(){
+dButton.addEventListener('click', function () {
 	handleQuestionAnswer(3);
 })
-
-startGame();
+beginButton.addEventListener('click', function () {
+	handleBeginGame();
+})

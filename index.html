@@ -1,34 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Document</title>
 </head>
+
 <body>
-	<div>
-		<h4>Time Remaining: <span id="time-left"></span></h4>
-	</div>
-	<div>
-		<h4 id="question-text"></h4>
-		<button class="answer-button" id="A"></button>
-		<button class="answer-button" id="B"></button>
-		<button class="answer-button" id="C"></button>
-		<button class="answer-button" id="D"></button>
-	</div>
-	<div>
-		<h4>Score: <span id="score">TBD</span></h4>
-	</div>
-	<div id="high-scores" style="display:none;">
+	<section id="begin-game-section">
+		<button id="begin-button">Begin Game</button>
+	</section>
+	<section id="game-section" style="display:none;">
+		<div>
+			<h4>Time Remaining: <span id="time-left"></span></h4>
+		</div>
+		<div>
+			<h4 id="question-text"></h4>
+			<button class="answer-button" id="A"></button>
+			<button class="answer-button" id="B"></button>
+			<button class="answer-button" id="C"></button>
+			<button class="answer-button" id="D"></button>
+		</div>
+	</section>
+	<section id="high-scores-section" style="display:none;">
+		<div>
+			<h4>Score: <span id="score">TBD</span></h4>
+		</div>
 		<h6>
-			Enter Initials: 
+			Enter Initials:
 		</h6>
-		<input />
+		<input id="initials-input" />
 		<button id="hs-button">Save HS</button>
-	</div>
+	</section>
 
 
 	<script type='text/javascript' src='./assets/js/script.js'> </script>
 </body>
+
 </html>
